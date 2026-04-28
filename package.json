@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.104.1",
@@ -14,8 +14,8 @@
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.11.0",
     "next": "15.1.0",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "tailwind-merge": "^3.5.0",
     "zustand": "^5.0.12"
   },

@@ -2,11 +2,33 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
-import { Copy, Share, Settings, AlertCircle, RefreshCw } from "lucide-react";
+import { Copy, Share, AlertCircle, RefreshCw } from "lucide-react";
 import { toggleRoomStatusAction } from "./actions";
 import { useRouter } from "next/navigation";
 
-export default function AdminClient({ room, orders, ownerToken }: { room: any, orders: any[], ownerToken: string }) {
+type OrderItem = {
+  id: string;
+  item_name: string;
+  quantity: number;
+  price?: number | null;
+  option_text?: string | null;
+};
+
+type Order = {
+  id: string;
+  customer_name: string;
+  order_items: OrderItem[];
+};
+
+type Room = {
+  id: string;
+  slug: string;
+  title: string;
+  status: string;
+  store_name?: string | null;
+};
+
+export default function AdminClient({ room, orders, ownerToken }: { room: Room, orders: Order[], ownerToken: string }) {
   const [activeTab, setActiveTab] = useState<"users" | "menus">("users");
   const [isChangingStatus, setIsChangingStatus] = useState(false);
   const router = useRouter();
@@ -18,7 +40,7 @@ export default function AdminClient({ room, orders, ownerToken }: { room: any, o
       const myRooms = stored ? JSON.parse(stored) : [];
       
       // 이미 목록에 있는지 확인
-      const exists = myRooms.some((r: any) => r.slug === room.slug);
+      const exists = myRooms.some((r: { slug: string }) => r.slug === room.slug);
       if (!exists) {
         const newRoom = {
           slug: room.slug,
@@ -41,7 +63,7 @@ export default function AdminClient({ room, orders, ownerToken }: { room: any, o
   let totalPrice = 0;
 
   orders.forEach(o => {
-    o.order_items.forEach((item: any) => {
+    o.order_items.forEach(item => {
       const key = item.item_name;
       menuCounts[key] = (menuCounts[key] || 0) + item.quantity;
       totalQuantity += item.quantity;
@@ -55,7 +77,7 @@ export default function AdminClient({ room, orders, ownerToken }: { room: any, o
     let text = "";
     orders.forEach(o => {
       text += `${o.customer_name} - `;
-      const itemsText = o.order_items.map((item: any) => {
+      const itemsText = o.order_items.map(item => {
         let str = `${item.item_name} ${item.quantity}`;
         if (item.option_text) str += ` (${item.option_text})`;
         return str;
@@ -159,7 +181,7 @@ export default function AdminClient({ room, orders, ownerToken }: { room: any, o
                   <span className="font-bold text-lg">{order.customer_name}</span>
                 </div>
                 <ul className="space-y-2">
-                  {order.order_items.map((item: any) => (
+                  {order.order_items.map(item => (
                     <li key={item.id} className="flex flex-col text-sm">
                       <div className="flex justify-between">
                         <span>{item.item_name} x {item.quantity}</span>

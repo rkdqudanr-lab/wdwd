@@ -19,9 +19,13 @@ export default function RecentRooms() {
   useEffect(() => {
     const stored = localStorage.getItem("wdwd_my_rooms");
     if (stored) {
-      setRooms(JSON.parse(stored));
+      setTimeout(() => {
+        setRooms(JSON.parse(stored));
+        setIsLoaded(true);
+      }, 0);
+    } else {
+      setTimeout(() => setIsLoaded(true), 0);
     }
-    setIsLoaded(true);
   }, []);
 
   if (!isLoaded || rooms.length === 0) {

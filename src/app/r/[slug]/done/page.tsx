@@ -44,7 +44,7 @@ export default async function OrderDonePage({
       <div className="w-full bg-brand-cream rounded-2xl p-6 mb-8 text-left border border-brand-brown/10">
         <h2 className="font-semibold text-brand-brown mb-4">주문 내역</h2>
         <ul className="space-y-3">
-          {order.order_items.map((item: any) => (
+          {order.order_items.map((item: { id: string; item_name: string; quantity: number; option_text?: string | null; price?: number | null }) => (
             <li key={item.id} className="flex justify-between items-start text-sm">
               <div>
                 <p className="font-medium">{item.item_name} <span className="text-brand-brown/60 font-normal">x{item.quantity}</span></p>

@@ -27,11 +27,18 @@ type CartItem = {
   memo: string;
 };
 
+type Room = {
+  id: string;
+  slug: string;
+  status: string;
+  deadline_at?: string | null;
+};
+
 export default function OrderClient({ 
   room, 
   initialMenuItems 
 }: { 
-  room: any; 
+  room: Room; 
   initialMenuItems: MenuItem[] 
 }) {
   const [customerName, setCustomerName] = useState("");
@@ -44,9 +51,12 @@ export default function OrderClient({
     try {
       const stored = localStorage.getItem("wdwd_recent_orders");
       if (stored) {
-        setRecentOrders(JSON.parse(stored));
+        // avoid synchronous setState within an effect
+        setTimeout(() => setRecentOrders(JSON.parse(stored)), 0);
       }
-    } catch (e) {}
+    } catch {
+      // ignore
+    }
   }, []);
 
   const handleNameChange = (val: string) => {
@@ -135,6 +145,7 @@ export default function OrderClient({
         // redirect is handled in action
       }
     } catch (err) {
+      console.error(err);
       alert("주문 처리 중 오류가 발생했습니다.");
       setIsSubmitting(false);
     }
