@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { Copy, Share, Settings, AlertCircle, RefreshCw } from "lucide-react";
 import { toggleRoomStatusAction } from "./actions";
