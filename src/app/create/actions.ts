@@ -10,7 +10,8 @@ export async function createRoomAction(formData: FormData) {
   const deadlineAtStr = formData.get("deadlineAt") as string;
 
   if (!title) {
-    return { error: "방 제목을 입력해주세요." };
+    // 서버 컴포넌트 폼 액션은 void를 반환해야 하므로 에러 처리를 단순화합니다.
+    return;
   }
 
   const slug = randomBytes(4).toString("hex");
@@ -41,7 +42,7 @@ export async function createRoomAction(formData: FormData) {
 
   if (error) {
     console.error("Error creating room:", error);
-    return { error: "주문방 생성 중 오류가 발생했습니다." };
+    return;
   }
 
   // Redirect to admin page
