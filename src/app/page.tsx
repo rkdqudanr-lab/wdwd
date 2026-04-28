@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Coffee, Store, Zap, ArrowRight } from "lucide-react";
+import RecentRooms from "@/components/RecentRooms";
 
 export default function HomePage() {
   return (
@@ -35,19 +36,19 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 액션 버튼 */}
-        <div className="space-y-3 pt-4">
+        {/* 액션 버튼 및 최근 목록 */}
+        <div className="space-y-6 pt-4">
           <Link href="/create" className="block">
-            <Button size="lg" className="w-full group">
+            <Button size="lg" className="w-full group h-14 text-lg">
               새 주문방 만들기
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
-          <Button variant="outline" size="lg" className="w-full" disabled>
-            최근 만든 주문방 보기 (준비 중)
-          </Button>
+          
+          <RecentRooms />
         </div>
       </div>
     </main>
   );
 }
+

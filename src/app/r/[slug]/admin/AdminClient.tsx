@@ -11,6 +11,30 @@ export default function AdminClient({ room, orders, ownerToken }: { room: any, o
   const [isChangingStatus, setIsChangingStatus] = useState(false);
   const router = useRouter();
 
+  // 내가 만든 방 목록 저장 (최근 만든 주문방 보기 기능용)
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("wdwd_my_rooms");
+      const myRooms = stored ? JSON.parse(stored) : [];
+      
+      // 이미 목록에 있는지 확인
+      const exists = myRooms.some((r: any) => r.slug === room.slug);
+      if (!exists) {
+        const newRoom = {
+          slug: room.slug,
+          title: room.title,
+          ownerToken: ownerToken,
+          createdAt: new Date().toISOString()
+        };
+        // 최신순으로 정렬하기 위해 앞에 추가하고 최대 5개까지만 유지
+        const updatedRooms = [newRoom, ...myRooms].slice(0, 5);
+        localStorage.setItem("wdwd_my_rooms", JSON.stringify(updatedRooms));
+      }
+    } catch (e) {
+      console.error("Failed to save room to local storage", e);
+    }
+  }, [room.slug, room.title, ownerToken]);
+
   // Group by menu
   const menuCounts: Record<string, number> = {};
   let totalQuantity = 0;
